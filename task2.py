@@ -1,0 +1,5 @@
+import pandas as pd
+
+dataset = pd.read_csv("dataset_phishing.csv")
+
+print(dataset.head())
