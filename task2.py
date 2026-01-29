@@ -1,5 +1,8 @@
 import pandas as pd
 
+import matplotlib.pyplot as plt
+import numpy as np
+
 dataset = pd.read_csv("dataset_phishing.csv")
 
 print(dataset.info())
@@ -170,3 +173,92 @@ print(f"  Valores unicos: {X_2d[mejor_2].nunique()}")
 print(f"  Minimo: {X_2d[mejor_2].min():.2f}")
 print(f"  Maximo: {X_2d[mejor_2].max():.2f}")
 print(f"  Promedio: {X_2d[mejor_2].mean():.2f}")
+
+# ====================================================================
+# GRAFICAR LOS DATOS EN 2D
+print("\n" + "=" * 60)
+print("GRAFICANDO LOS DATOS EN 2D")
+
+print("\nCreando grafico de dispersion 2D")
+print(f"Eje X: {mejor_1}")
+print(f"Eje Y: {mejor_2}")
+print("Colores: Azul = legitimate (0), Rojo = phishing (1)")
+
+# Crear la figura
+plt.figure(figsize=(10, 8))
+
+# Separar los datos por clase para graficar con colores diferentes
+# Clase 0: legitimate (azul)
+x_clase0 = X_2d[y == 0][mejor_1]
+y_clase0 = X_2d[y == 0][mejor_2]
+
+# Clase 1: phishing (rojo)
+x_clase1 = X_2d[y == 1][mejor_1]
+y_clase1 = X_2d[y == 1][mejor_2]
+
+# Graficar puntos de cada clase
+plt.scatter(x_clase0, y_clase0, 
+           color='blue', alpha=0.6, s=20,
+           label='Legitimate (0)', edgecolors='w', linewidth=0.5)
+
+plt.scatter(x_clase1, y_clase1, 
+           color='red', alpha=0.6, s=20,
+           label='Phishing (1)', edgecolors='w', linewidth=0.5)
+
+# Configurar el grafico
+plt.xlabel(mejor_1, fontsize=12)
+plt.ylabel(mejor_2, fontsize=12)
+plt.title(f'Visualización 2D para Detección de Phishing\n{mejor_1} vs {mejor_2}', 
+          fontsize=14, fontweight='bold')
+
+plt.grid(True, alpha=0.3)
+plt.legend(loc='best')
+plt.tight_layout()
+
+# Mostrar el grafico
+plt.show()
+
+# ====================================================================
+# GRAFICA ADICIONAL: HISTOGRAMAS POR CLASE
+# ====================================================================
+print("\n" + "=" * 60)
+print("GRAFICAS ADICIONALES: HISTOGRAMAS POR CLASE")
+print("=" * 60)
+
+# Crear figura con subplots
+fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+
+# Histograma de mejor_1 por clase
+axes[0, 0].hist(x_clase0, bins=30, alpha=0.7, color='blue', label='Legitimate')
+axes[0, 0].hist(x_clase1, bins=30, alpha=0.7, color='red', label='Phishing')
+axes[0, 0].set_xlabel(mejor_1)
+axes[0, 0].set_ylabel('Frecuencia')
+axes[0, 0].set_title(f'Distribución de {mejor_1} por Clase')
+axes[0, 0].legend()
+axes[0, 0].grid(True, alpha=0.3)
+
+# Histograma de mejor_2 por clase
+axes[0, 1].hist(y_clase0, bins=30, alpha=0.7, color='blue', label='Legitimate')
+axes[0, 1].hist(y_clase1, bins=30, alpha=0.7, color='red', label='Phishing')
+axes[0, 1].set_xlabel(mejor_2)
+axes[0, 1].set_ylabel('Frecuencia')
+axes[0, 1].set_title(f'Distribución de {mejor_2} por Clase')
+axes[0, 1].legend()
+axes[0, 1].grid(True, alpha=0.3)
+
+# Boxplot de mejor_1 por clase
+boxplot_data1 = [x_clase0, x_clase1]
+axes[1, 0].boxplot(boxplot_data1, labels=['Legitimate', 'Phishing'])
+axes[1, 0].set_ylabel(mejor_1)
+axes[1, 0].set_title(f'Boxplot de {mejor_1} por Clase')
+axes[1, 0].grid(True, alpha=0.3)
+
+# Boxplot de mejor_2 por clase
+boxplot_data2 = [y_clase0, y_clase1]
+axes[1, 1].boxplot(boxplot_data2, labels=['Legitimate', 'Phishing'])
+axes[1, 1].set_ylabel(mejor_2)
+axes[1, 1].set_title(f'Boxplot de {mejor_2} por Clase')
+axes[1, 1].grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
