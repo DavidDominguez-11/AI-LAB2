@@ -3,6 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+from sklearn.preprocessing import StandardScaler
+
+
 dataset = pd.read_csv("dataset_phishing.csv")
 
 print(dataset.info())
@@ -117,3 +120,22 @@ plt.legend()
 plt.title("Distribución de Features Seleccionadas")
 plt.show()
 
+# 3
+# a
+print("\n" + "=" * 30)
+print("\n Escalado MUST")
+
+scaler = StandardScaler()
+
+# Ajustar y transformar SOLO las features
+X_scaled = scaler.fit_transform(X_2d)
+
+# pasarlo a dataframe pq me daba errores
+X_scaled = pd.DataFrame(
+    X_scaled,
+    columns=X_2d.columns
+)
+
+# para verrificar mean ≈ 0, std ≈ 1
+print("\nVerificacion de escalado mean ≈ 0, std ≈ 1: ")
+print(X_scaled.describe())
