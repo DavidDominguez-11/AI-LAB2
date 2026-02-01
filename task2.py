@@ -80,4 +80,13 @@ print(correlations)
 print("\nLas 10 mas correlacionadas:")
 print(correlations.head(10))
 
+# seleccionar las 2 variables mas correlacionadas
+print("\nSeleccionando las 2 variables mas correlacionadas:")
+X_selected = X[correlations.head(2).index]
+print(X_selected.head())
+selected_features = [correlations.index[0], correlations.index[1]]
+print(f"\nFeatures seleccionadas: {selected_features}")
+
+
+
 
