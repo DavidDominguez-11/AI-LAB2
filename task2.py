@@ -84,9 +84,36 @@ print(correlations.head(10))
 print("\nSeleccionando las 2 variables mas correlacionadas:")
 X_selected = X[correlations.head(2).index]
 print(X_selected.head())
-selected_features = [correlations.index[0], correlations.index[1]]
+
+selected_features = [correlations.index[2], correlations.index[3]]
+#selected_features = ["ratio_digits_url", "nb_dots"]
+
 print(f"\nFeatures seleccionadas: {selected_features}")
 
+# dataset con las 2 variables mas correlacionadas
+X_2d = dataset[selected_features]
+y = dataset["status"]
 
+# scatter plot
+plt.figure(figsize=(6, 5))
 
+plt.scatter(
+    X_2d[y == 0].iloc[:, 0],
+    X_2d[y == 0].iloc[:, 1],
+    label="Legitimate",
+    alpha=0.5
+)
+
+plt.scatter(
+    X_2d[y == 1].iloc[:, 0],
+    X_2d[y == 1].iloc[:, 1],
+    label="Phishing",
+    alpha=0.5
+)
+
+plt.xlabel(selected_features[0])
+plt.ylabel(selected_features[1])
+plt.legend()
+plt.title("Distribución de Features Seleccionadas")
+plt.show()
 
